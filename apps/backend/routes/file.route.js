@@ -26,46 +26,57 @@ router.post(
   upload.array("files", 5),
   validate(uploadFilesSchema),
   async (req, res) => {
-    if (!req.files || req.files.length === 0) {
-      return res.status(400).json({ message: "No files uploaded" });
-    }
+    try {
+      if (!req.files?.length) {
+        return res.status(400).json({ message: "No files uploaded" });
+      }
 
-    const savedFiles = [];
+      const savedFiles = [];
 
-    for (const file of req.files) {
-      const storageKey = `uploads/${uuid()}-${file.originalname}`;
+      for (const file of req.files) {
+        const storageKey = `uploads/${uuid()}-${file.originalname}`;
 
-      await uploadToS3({
-        key: storageKey,
-        buffer: file.buffer,
-        contentType: file.mimetype,
+        await uploadToS3({
+          key: storageKey,
+          buffer: file.buffer,
+          contentType: file.mimetype,
+        });
+
+        const dbFile = await File.create({
+          ownerId: req.user.id,
+          filename: file.originalname,
+          mimeType: file.mimetype,
+          size: file.size,
+          storageKey,
+        });
+
+        savedFiles.push(dbFile);
+      }
+
+      res.status(201).json({
+        message: "Files uploaded successfully",
+        files: savedFiles,
       });
-
-      const dbFile = await File.create({
-        ownerId: req.user.id,
-        filename: file.originalname,
-        mimeType: file.mimetype,
-        size: file.size,
-        storageKey,
-      });
-
-      savedFiles.push(dbFile);
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ message: "Upload failed" });
     }
-
-    res.status(201).json({
-      message: "Files uploaded successfully",
-      files: savedFiles,
-    });
   }
 );
+const asyncHandler = (fn) => (req, res, next) =>
+  Promise.resolve(fn(req, res, next)).catch(next);
 
-router.get("/", authMiddleware, async (req, res) => {
-  const files = await File.find({ ownerId: req.user.id }).select(
-    "filename mimeType size createdAt"
-  );
+router.get(
+  "/",
+  authMiddleware,
+  asyncHandler(async (req, res) => {
+    const files = await File.find({ ownerId: req.user.id }).select(
+      "filename mimeType size createdAt"
+    );
 
-  res.json(files);
-});
+    res.json(files);
+  })
+);
 
 router.get(
   "/:fileId/download",
