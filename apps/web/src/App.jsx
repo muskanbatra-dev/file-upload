@@ -7,11 +7,11 @@ import ProtectedRoute from "./components/ProtectedRoute";
 const App = () => {
   return (
     <Routes>
-      {/* Public */}
+
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
 
-      {/* Protected */}
+   
       <Route
         path="/"
         element={
@@ -21,7 +21,7 @@ const App = () => {
         }
       />
 
-      {/* Fallback */}
+    
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
