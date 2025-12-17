@@ -16,23 +16,29 @@ export const canAccessFile = async (req, res, next) => {
     return next();
   }
 
-  const share = await Share.findOne({
+  const userShare = await Share.findOne({
     fileId,
-    $or: [
-      { sharedWith: userId },
-      { shareToken: token }
-    ]
+    sharedWith: userId,
+    $or: [{ expiresAt: null }, { expiresAt: { $gt: new Date() } }],
   });
 
-  if (!share) {
-    return res.status(403).json({ message: "Access denied" });
+  if (userShare) {
+    req.file = file;
+    return next();
   }
 
-  if (share.expiresAt && share.expiresAt < new Date()) {
-    return res.status(403).json({ message: "Share expired" });
+  if (token) {
+    const linkShare = await Share.findOne({
+      fileId,
+      shareToken: token,
+      $or: [{ expiresAt: null }, { expiresAt: { $gt: new Date() } }],
+    });
+
+    if (linkShare) {
+      req.file = file;
+      return next();
+    }
   }
 
-  req.file = file;
-  next();
+  return res.status(403).json({ message: "Access denied" });
 };
-ß
