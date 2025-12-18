@@ -63,7 +63,7 @@ Create a `.env` file inside `apps/backend`:
 
 ```env
 PORT=5000
-MONGO_URI=mongodb://localhost:27017/image-drive
+MONGO_URI=mongodb+srv://muskanbatra0024_db_user:5nbbJ0gphERvw10A@cluster0.tiorrbi.mongodb.net/?appName=Cluster0
 JWT_SECRET=your-secret-key
 FRONTEND_URL=http://localhost:5173
 ```
