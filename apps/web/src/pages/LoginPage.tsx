@@ -1,7 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
+import "./LoginPage.css";
 const API_BASE = "https://file-upload-pry8.onrender.com/api";
 
 export default function LoginPage() {
