@@ -1,8 +1,13 @@
 import axios from "axios";
+import { FileItem } from "../types/file";
 
 const API_BASE = "https://file-upload-pry8.onrender.com/api";
 
-export default function FileCard({ file }) {
+interface Props {
+  file: FileItem;
+}
+
+export default function FileCard({ file }: Props) {
   const download = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -15,7 +20,6 @@ export default function FileCard({ file }) {
 
       window.open(res.data.downloadUrl, "_blank");
     } catch (err) {
-      console.error(err);
       alert("You are not allowed to download this file");
     }
   };

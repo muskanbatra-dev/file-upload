@@ -3,7 +3,12 @@ import { useState } from "react";
 
 const API_BASE = "https://file-upload-pry8.onrender.com/api";
 
-export default function ShareModal({ fileId, onClose }) {
+interface Props {
+  fileId: string;
+  onClose: () => void;
+}
+
+export default function ShareModal({ fileId, onClose }: Props) {
   const [userId, setUserId] = useState("");
   const [shareLink, setShareLink] = useState("");
   const [loading, setLoading] = useState(false);
@@ -11,20 +16,14 @@ export default function ShareModal({ fileId, onClose }) {
   const token = localStorage.getItem("token");
 
   const shareWithUser = async () => {
-    if (!userId) {
-      alert("Please enter a user ID");
-      return;
-    }
+    if (!userId) return alert("Enter user ID");
 
     try {
       setLoading(true);
 
       await axios.post(
         `${API_BASE}/files/${fileId}/share-user`,
-        {
-          userIds: [userId],
-         
-        },
+        { userIds: [userId] },
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -32,25 +31,20 @@ export default function ShareModal({ fileId, onClose }) {
         }
       );
 
-      alert("File shared with user");
+      alert("Shared with user");
       setUserId("");
-    } catch (err) {
-      console.error(err);
-      alert(err.response?.data?.message || "Failed to share file");
     } finally {
       setLoading(false);
     }
   };
 
-  const shareLinkHandler = async () => {
+  const generateLink = async () => {
     try {
       setLoading(true);
 
       const res = await axios.post(
         `${API_BASE}/files/${fileId}/share-link`,
-        {
-         
-        },
+        {},
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -59,9 +53,6 @@ export default function ShareModal({ fileId, onClose }) {
       );
 
       setShareLink(res.data.shareUrl);
-    } catch (err) {
-      console.error(err);
-      alert(err.response?.data?.message || "Failed to generate link");
     } finally {
       setLoading(false);
     }
@@ -69,37 +60,29 @@ export default function ShareModal({ fileId, onClose }) {
 
   return (
     <div style={{ padding: "20px", border: "1px solid #ccc" }}>
-      <h3>Share File</h3>
+      <input
+        placeholder="User ID"
+        value={userId}
+        onChange={(e) => setUserId(e.target.value)}
+      />
 
-      <div>
-        <input
-          placeholder="User ID"
-          value={userId}
-          onChange={(e) => setUserId(e.target.value)}
-        />
-        <button onClick={shareWithUser} disabled={loading}>
-          Share with User
-        </button>
-      </div>
+      <button onClick={shareWithUser} disabled={loading}>
+        Share with User
+      </button>
 
-      <div style={{ marginTop: "10px" }}>
-        <button onClick={shareLinkHandler} disabled={loading}>
-          Generate Share Link
-        </button>
-      </div>
+      <button onClick={generateLink} disabled={loading}>
+        Generate Link
+      </button>
 
       {shareLink && (
-        <div style={{ marginTop: "10px" }}>
-          <p>Share link:</p>
+        <p>
           <a href={shareLink} target="_blank" rel="noreferrer">
             {shareLink}
           </a>
-        </div>
+        </p>
       )}
 
-      <button onClick={onClose} style={{ marginTop: "15px" }}>
-        Close
-      </button>
+      <button onClick={onClose}>Close</button>
     </div>
   );
 }

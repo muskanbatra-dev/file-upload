@@ -1,10 +1,16 @@
 import axios from "axios";
 import { useState } from "react";
+import { FileItem } from "../types/file";
 
 const API_BASE = "https://file-upload-pry8.onrender.com/api";
 
-export default function UploadModal({ onClose, onUploadSuccess }) {
-  const [files, setFiles] = useState([]);
+interface Props {
+  onClose: () => void;
+  onUploadSuccess: (files: FileItem[]) => void;
+}
+
+export default function UploadModal({ onClose, onUploadSuccess }: Props) {
+  const [files, setFiles] = useState<File[]>([]);
   const [loading, setLoading] = useState(false);
 
   const upload = async () => {
@@ -24,19 +30,13 @@ export default function UploadModal({ onClose, onUploadSuccess }) {
       const res = await axios.post(`${API_BASE}/files/upload`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
-          "Content-Type": "multipart/form-data",
         },
       });
 
-      
-      if (onUploadSuccess) {
-        onUploadSuccess(res.data.files);
-      }
-
+      onUploadSuccess(res.data.files);
       onClose();
     } catch (err) {
-      console.error(err);
-      alert(err.response?.data?.message || "Upload failed");
+      alert("Upload failed");
     } finally {
       setLoading(false);
     }
@@ -49,18 +49,16 @@ export default function UploadModal({ onClose, onUploadSuccess }) {
       <input
         type="file"
         multiple
-        onChange={(e) => setFiles([...e.target.files])}
+        onChange={(e) => setFiles(Array.from(e.target.files || []))}
       />
 
-      <div style={{ marginTop: "10px" }}>
-        <button onClick={upload} disabled={loading}>
-          {loading ? "Uploading..." : "Upload"}
-        </button>
+      <button onClick={upload} disabled={loading}>
+        {loading ? "Uploading..." : "Upload"}
+      </button>
 
-        <button onClick={onClose} style={{ marginLeft: "10px" }}>
-          Cancel
-        </button>
-      </div>
+      <button onClick={onClose} style={{ marginLeft: "10px" }}>
+        Cancel
+      </button>
     </div>
   );
 }

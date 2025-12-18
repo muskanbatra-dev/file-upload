@@ -2,23 +2,25 @@ import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-export default function Login() {
+const API_BASE = "https://file-upload-pry8.onrender.com/api";
+
+export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
   const handleLogin = async () => {
     try {
-      const res = await axios.post(
-        "https://file-upload-pry8.onrender.com/api/auth/login",
-        { email, password }
-      );
+      const res = await axios.post(`${API_BASE}/auth/login`, {
+        email,
+        password,
+      });
 
       localStorage.setItem("token", res.data.token);
 
       
       navigate("/", { replace: true });
-    } catch (err) {
+    } catch (err: any) {
       alert(err.response?.data?.message || "Login failed");
     }
   };
