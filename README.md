@@ -65,7 +65,7 @@ Create a `.env` file inside `apps/backend`:
 PORT=5000
 MONGO_URI=mongodb://localhost:27017/image-drive
 JWT_SECRET=your-secret-key
-FRONTEND_URL=http://localhost:5174
+FRONTEND_URL=http://localhost:5173
 ```
 
 ### 4️⃣ Start MongoDB
