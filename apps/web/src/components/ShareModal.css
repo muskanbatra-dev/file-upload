@@ -1,0 +1,85 @@
+.share-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.share-modal {
+  background: #fff;
+  padding: 24px;
+  width: 360px;
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+.share-modal h3 {
+  margin-bottom: 16px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.share-input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  margin-bottom: 14px;
+  font-size: 14px;
+}
+
+.share-actions {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.share-actions button {
+  flex: 1;
+  padding: 8px 10px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.share-actions button:first-child {
+  background: #10b981;
+  color: white;
+}
+
+.share-actions button:last-child {
+  background: #2563eb;
+  color: white;
+}
+
+.share-actions button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.share-link {
+  background: #f9fafb;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 13px;
+  word-break: break-all;
+  margin-bottom: 12px;
+}
+
+.share-link a {
+  color: #2563eb;
+  text-decoration: none;
+}
+
+.close-btn {
+  width: 100%;
+  padding: 8px;
+  border: none;
+  border-radius: 8px;
+  background: #e5e7eb;
+  cursor: pointer;
+}

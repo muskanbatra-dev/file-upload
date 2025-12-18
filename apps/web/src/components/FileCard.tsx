@@ -3,6 +3,7 @@ import { FileItem } from "../types/file";
 import "./FileCard.css";
 import ShareModal from "./ShareModal";
 import { useState } from "react";
+
 const API_BASE = "https://file-upload-pry8.onrender.com/api";
 
 interface Props {
@@ -11,6 +12,7 @@ interface Props {
 
 export default function FileCard({ file }: Props) {
   const [showShare, setShowShare] = useState(false);
+
   const download = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -29,14 +31,21 @@ export default function FileCard({ file }: Props) {
 
   return (
     <div className="file-card">
-      <span className="file-name">{file.filename}</span>
+      <div className="file-icon">📄</div>
 
-      <button className="download-btn" onClick={download}>
-        Download
-      </button>
-      <button className="share-btn" onClick={() => setShowShare(true)}>
-        Share
-      </button>
+      <div className="file-info">
+        <span className="file-name">{file.filename}</span>
+
+        <div className="file-actions">
+          <button className="download-btn" onClick={download}>
+            Download
+          </button>
+          <button className="share-btn" onClick={() => setShowShare(true)}>
+            Share
+          </button>
+        </div>
+      </div>
+
       {showShare && (
         <ShareModal fileId={file._id} onClose={() => setShowShare(false)} />
       )}

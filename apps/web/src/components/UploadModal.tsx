@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import { FileItem } from "../types/file";
+import "./UploadModal.css";
 
 const API_BASE = "https://file-upload-pry8.onrender.com/api";
 
@@ -35,7 +36,7 @@ export default function UploadModal({ onClose, onUploadSuccess }: Props) {
 
       onUploadSuccess(res.data.files);
       onClose();
-    } catch (err) {
+    } catch {
       alert("Upload failed");
     } finally {
       setLoading(false);
@@ -43,22 +44,31 @@ export default function UploadModal({ onClose, onUploadSuccess }: Props) {
   };
 
   return (
-    <div style={{ padding: "20px", border: "1px solid #ccc" }}>
-      <h3>Upload Files</h3>
+    <div className="upload-overlay">
+      <div className="upload-modal">
+        <h3>Upload Files</h3>
 
-      <input
-        type="file"
-        multiple
-        onChange={(e) => setFiles(Array.from(e.target.files || []))}
-      />
+        <input
+          type="file"
+          multiple
+          className="file-input"
+          onChange={(e) => setFiles(Array.from(e.target.files || []))}
+        />
 
-      <button onClick={upload} disabled={loading}>
-        {loading ? "Uploading..." : "Upload"}
-      </button>
+        {files.length > 0 && (
+          <p className="file-count">{files.length} file(s) selected</p>
+        )}
 
-      <button onClick={onClose} style={{ marginLeft: "10px" }}>
-        Cancel
-      </button>
+        <div className="upload-actions">
+          <button onClick={upload} disabled={loading}>
+            {loading ? "Uploading..." : "Upload"}
+          </button>
+
+          <button className="cancel-btn" onClick={onClose}>
+            Cancel
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
