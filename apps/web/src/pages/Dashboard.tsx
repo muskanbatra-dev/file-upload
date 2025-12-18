@@ -3,6 +3,7 @@ import axios from "axios";
 import FileCard from "../components/FileCard";
 import UploadModal from "../components/UploadModal";
 import { FileItem } from "../types/file";
+import "./Dashboard.css";
 
 const API_BASE = "https://file-upload-pry8.onrender.com/api";
 
@@ -14,23 +15,15 @@ export default function Dashboard() {
   useEffect(() => {
     const fetchFiles = async () => {
       const token = localStorage.getItem("token");
-
-      if (!token) {
-        console.error("No token found");
-        setLoading(false);
-        return;
-      }
+      if (!token) return setLoading(false);
 
       try {
         const res = await axios.get<FileItem[]>(`${API_BASE}/files`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          headers: { Authorization: `Bearer ${token}` },
         });
-
         setFiles(res.data);
       } catch (err) {
-        console.error("Fetch files error:", err);
+        console.error(err);
       } finally {
         setLoading(false);
       }
@@ -39,17 +32,22 @@ export default function Dashboard() {
     fetchFiles();
   }, []);
 
-  if (loading) return <p>Loading files...</p>;
+  if (loading) return <p className="loading">Loading files...</p>;
 
   return (
-    <div style={{ padding: "20px" }}>
-      <h2>My Files</h2>
+    <div className="dashboard">
+      <div className="dashboard-header">
+        <h2>My Files</h2>
+        <button className="upload-btn" onClick={() => setShowUpload(true)}>
+          Upload
+        </button>
+      </div>
 
-      <button onClick={() => setShowUpload(true)}>Upload</button>
+      {files.length === 0 && (
+        <p className="empty-state">No files uploaded yet.</p>
+      )}
 
-      {files.length === 0 && <p>No files uploaded yet.</p>}
-
-      <div style={{ marginTop: "20px" }}>
+      <div className="file-list">
         {files.map((file) => (
           <FileCard key={file._id} file={file} />
         ))}
@@ -58,7 +56,7 @@ export default function Dashboard() {
       {showUpload && (
         <UploadModal
           onClose={() => setShowUpload(false)}
-          onUploadSuccess={(newFiles: any) =>
+          onUploadSuccess={(newFiles: FileItem[]) =>
             setFiles((prev) => [...newFiles, ...prev])
           }
         />

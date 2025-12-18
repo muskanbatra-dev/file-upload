@@ -1,0 +1,55 @@
+.dashboard {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 30px 20px;
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.dashboard-header h2 {
+  margin: 0;
+  font-size: 24px;
+  color: #111827;
+}
+
+.upload-btn {
+  background: #6366f1;
+  color: #fff;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.upload-btn:hover {
+  background: #4f46e5;
+}
+
+.file-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+}
+
+.empty-state {
+  color: #6b7280;
+  margin-top: 20px;
+}
+
+.loading {
+  text-align: center;
+  margin-top: 50px;
+  color: #6b7280;
+}

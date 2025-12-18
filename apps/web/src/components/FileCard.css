@@ -1,0 +1,48 @@
+.file-card {
+  border: 1px solid #e5e7eb;
+  padding: 14px;
+  border-radius: 8px;
+  background: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.file-name {
+  font-size: 14px;
+  color: #1f2937;
+  word-break: break-all;
+}
+
+.file-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.download-btn {
+  background: #10b981;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 5px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.download-btn:hover {
+  background: #059669;
+}
+
+.share-btn {
+  background: #6366f1;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 5px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.share-btn:hover {
+  background: #4f46e5;
+}

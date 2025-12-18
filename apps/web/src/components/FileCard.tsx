@@ -1,6 +1,8 @@
 import axios from "axios";
 import { FileItem } from "../types/file";
-
+import "./FileCard.css";
+import ShareModal from "./ShareModal";
+import { useState } from "react";
 const API_BASE = "https://file-upload-pry8.onrender.com/api";
 
 interface Props {
@@ -8,6 +10,7 @@ interface Props {
 }
 
 export default function FileCard({ file }: Props) {
+  const [showShare, setShowShare] = useState(false);
   const download = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -19,21 +22,24 @@ export default function FileCard({ file }: Props) {
       });
 
       window.open(res.data.downloadUrl, "_blank");
-    } catch (err) {
+    } catch {
       alert("You are not allowed to download this file");
     }
   };
 
   return (
-    <div
-      style={{
-        border: "1px solid #ccc",
-        padding: "10px",
-        marginBottom: "10px",
-      }}
-    >
-      <p>{file.filename}</p>
-      <button onClick={download}>Download</button>
+    <div className="file-card">
+      <span className="file-name">{file.filename}</span>
+
+      <button className="download-btn" onClick={download}>
+        Download
+      </button>
+      <button className="share-btn" onClick={() => setShowShare(true)}>
+        Share
+      </button>
+      {showShare && (
+        <ShareModal fileId={file._id} onClose={() => setShowShare(false)} />
+      )}
     </div>
   );
 }
