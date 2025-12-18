@@ -18,7 +18,6 @@ export default function LoginPage() {
 
       localStorage.setItem("token", res.data.token);
 
-      
       navigate("/", { replace: true });
     } catch (err: any) {
       alert(err.response?.data?.message || "Login failed");
@@ -26,23 +25,29 @@ export default function LoginPage() {
   };
 
   return (
-    <div>
-      <h2>Login</h2>
+    <div className="login-container">
+      <div className="login-card">
+        <h2>Login</h2>
 
-      <input
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
+        <input
+          className="login-input"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
 
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
+        <input
+          className="login-input"
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
 
-      <button onClick={handleLogin}>Login</button>
+        <button className="login-button" onClick={handleLogin}>
+          Login
+        </button>
+      </div>
     </div>
   );
 }
