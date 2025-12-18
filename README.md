@@ -1,32 +1,86 @@
-# `Turborepo` Vite starter
+# Image Drive – File Upload & Sharing App
 
-This is a community-maintained example. If you experience a problem, please submit a pull request with a fix. GitHub Issues will be closed.
+A full-stack file upload and sharing application (Google Drive–like) built using **React, Node.js, Express, and MongoDB**.
 
-## Using this example
+---
 
-Run the following command:
+## ✨ Features
 
-```sh
-npx create-turbo@latest -e with-vite-react
+### Authentication
+
+- JWT-based login & registration
+
+### File Upload
+
+- Upload single or multiple files (images, PDFs, CSVs, etc.)
+- View file metadata (name, type, size, upload date)
+
+### File Sharing
+
+- Share files with specific users
+- Generate shareable links (authenticated access only)
+
+### Security
+
+- Strict access control (owner / shared users)
+- Unauthorized users cannot download files
+
+### Bonus
+
+- ✅ Link expiry support
+
+---
+
+## 🛠 Tech Stack
+
+- **Frontend**: React 18 + TypeScript + Vite
+- **Backend**: Node.js + Express
+- **Database**: MongoDB (Mongoose)
+- **Authentication**: JWT
+- **Storage**: AWS S3 (configurable)
+- **Monorepo**: Turborepo
+
+---
+
+## 🚀 Run Locally
+
+### 1️⃣ Clone the repository
+
+```bash
+git clone <repo-url>
+cd file-upload
 ```
 
-## What's inside?
+### 2️⃣ Install dependencies
 
-This Turborepo includes the following packages and apps:
+```bash
+npm install
+```
 
-### Apps and Packages
+### 3️⃣ Environment variables
 
-- `web`: react [vite](https://vitejs.dev) ts app
-- `@repo/ui`: a stub component library shared by `web` application
-- `@repo/eslint-config`: shared `eslint` configurations
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
+Create a `.env` file inside `apps/backend`:
 
-Each package and app is 100% [TypeScript](https://www.typescriptlang.org/).
+```env
+PORT=5000
+MONGO_URI=mongodb://localhost:27017/image-drive
+JWT_SECRET=your-secret-key
+FRONTEND_URL=http://localhost:5174
+```
 
-### Utilities
+### 4️⃣ Start MongoDB
 
-This Turborepo has some additional tools already setup for you:
+```bash
+mongod
+```
 
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
+_(or use a MongoDB Atlas connection string)_
+
+### 5️⃣ Start the app
+
+```bash
+npm run dev
+```
+
+- Frontend → http://localhost:5173
+- Backend
